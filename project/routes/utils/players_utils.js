@@ -29,18 +29,70 @@ async function getPlayersInfo(players_ids_list) {
     )
   );
   let players_info = await Promise.all(promises);
-  return extractRelevantPlayerData(players_info);
+  return extractRelevantPlayerPartialData(players_info);
 }
 
-function extractRelevantPlayerData(players_info) {
+async function getPlayerByName(playerName){
+  let promises = [];
+  let players_info = await axios.get(`${api_domain}/players/search/${playerName}`, {
+    params: {
+      api_token: process.env.api_token,
+      include: "team",
+    },
+    })
+  
+  return extractRelevantPlayerSearchData(players_info)
+}
+
+function extractRelevantPlayerPartialData(players_info) {
   return players_info.map((player_info) => {
-    const { fullname, image_path, position_id } = player_info.data.data;
+    const {player_id, fullname, image_path, position_id} = player_info.data.data;
     const { name } = player_info.data.data.team.data;
     return {
+      player_id: player_id,
       name: fullname,
       image: image_path,
       position: position_id,
       team_name: name,
+      };
+  });
+}
+
+function extractRelevantPlayerSearchData(players_info) {
+  return players_info.data.data.map((player_info) => {
+    if (typeof player_info.team !== 'undefined'){
+      const {player_id, fullname, image_path, position_id} = player_info;
+      console.log(player_info.team.data)
+      
+      const { name } = player_info.team.data;
+      return {
+      player_id: player_id,
+      name: fullname,
+      image: image_path,
+      position: position_id,
+      team_name: name,
+      };
+    }
+  });
+}
+
+// for later use
+function extractRelevantPlayerFullData(players_info) {
+  return players_info.map((player_info) => {
+    const {player_id, fullname, image_path, position_id, birthdate, birthcountry, height, weight, common_name, nationality} = player_info.data.data;
+    const { name } = player_info.data.data.team.data;
+    return {
+      player_id: player_id,
+      name: fullname,
+      image: image_path,
+      position: position_id,
+      team_name: name,
+      birth_date: birthdate,
+      birth_country: birthcountry,
+      height: height,
+      weight: weight, // may be null
+      common_name: common_name,
+      nationality: nationality
     };
   });
 }
@@ -53,3 +105,4 @@ async function getPlayersByTeam(team_id) {
 
 exports.getPlayersByTeam = getPlayersByTeam;
 exports.getPlayersInfo = getPlayersInfo;
+exports.getPlayerByName = getPlayerByName;

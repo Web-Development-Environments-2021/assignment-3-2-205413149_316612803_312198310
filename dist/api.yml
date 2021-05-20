@@ -138,6 +138,74 @@ paths:
                 $ref: "#/components/schemas/Team"
         "404":
           description: teamId is not exists
+  /teams/searchTeamByName/{teamName}:
+    get:
+      summary: get full deatils about a team by name. for search operations
+      description: useful for team page
+      tags:
+        - Teams
+      parameters:
+        - in: path
+          name: teamName
+          description: team's name
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: data about the team
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TeamFromSearch"
+        "404":
+          description: teamName is not exists
+  /players/playerFullDetails/{playerId}:
+    get:
+      summary: get full deatils about a player
+      description: useful for player page
+      tags:
+        - Players
+      parameters:
+        - in: path
+          name: playerId
+          description: player's id
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: data about the player
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/fullPlayersDetails"
+        "404":
+          description: playerId is not exists
+  /players/searchPlayerByName/{playerName}:
+    get:
+      summary: get full deatils about a player by name. for search operations
+      description: useful for player page
+      tags:
+        - players
+      parameters:
+        - in: path
+          name: playerName
+          description: player's name
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: data about the player
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/PlayerPreview"
+        "404":
+          description: playerName is not exists
 components:
   schemas:
     User:
@@ -232,6 +300,50 @@ components:
           type: string
           description: player's team name
           example: København
+    fullPlayersDetails:
+      type: object
+      properties:
+        name:
+          type: string
+          description: player's name
+          example: Sten Michael Grytebust
+        commonname:
+          type: string
+          description: player's common name
+          example: J. Jordan
+        image:
+          type: string
+          description: player's image
+          format: URL
+          example: https://cdn.sportmonks.com/images/soccer/players/11/84587.png
+        position:
+          type: integer
+          description: player's position in team
+          example: 1
+        teamname:
+          type: string
+          description: player's team name
+          example: København
+        birthdate:
+          type: string
+          description: player's birthdate
+          example: 07/07/1991
+        birthcountry:
+          type: string
+          description: player's country of birth
+          example: Scotalnd
+        height:
+          type: integer
+          description: player's height
+          example: 180 cm
+        weight:
+          type: string
+          description: player's weight
+          example: 85 kg # may be null
+        nationality:
+          type: string
+          description: player's nationality
+          example: Scotland
     Team:
       type: object
       properties:
@@ -244,3 +356,13 @@ components:
           items:
             type: object
             $ref: "#/components/schemas/PlayerPreview"
+    TeamFromSearch:
+      type: object
+      properties:
+        name:
+          type: string
+          description: team name
+          example: København
+        logo_path:
+          type: string
+            
