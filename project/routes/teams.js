@@ -5,13 +5,18 @@ const players_utils = require("./utils/players_utils");
 const teams_utils = require("./utils/teams_utils");
 
 router.get("/teamFullDetails/:teamId", async (req, res, next) => {
-  let team_details = [];
+   let players_details = [];
   try {
-    const team_details = await players_utils.getPlayersByTeam(
+    const players_details = await players_utils.getPlayersByTeam(
       req.params.teamId
     );
-    //we should keep implementing team page.....
-    res.send(team_details);
+    const coach_details = await teams_utils.getCoachByTeam(
+      req.params.teamId
+    );
+    // TODO - add games history
+
+    res.send({ players: players_details,
+               coach: coach_details });
   } catch (error) {
     next(error);
   }

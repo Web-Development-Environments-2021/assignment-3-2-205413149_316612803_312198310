@@ -22,7 +22,6 @@ const team = await axios.get(`${api_domain}/teams/${team_id}`, {
     return coach.data.data
 }
 
-
 async function getTeamByName(teamName) {
     let teams_info = await axios.get(`${api_domain}/teams/search/${teamName}`, {
         params: {
@@ -45,3 +44,4 @@ function extractRelevantTeamSearchData(teams_info){
 
 exports.getCoachByTeam = getCoachByTeam;
 exports.getTeamByName = getTeamByName;
+
