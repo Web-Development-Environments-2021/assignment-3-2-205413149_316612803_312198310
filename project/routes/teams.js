@@ -4,6 +4,7 @@ const DButils = require("./utils/DButils");
 const players_utils = require("./utils/players_utils");
 const teams_utils = require("./utils/teams_utils");
 
+//route after user selects a specific team. show full details by teamId.
 router.get("/teamFullDetails/:teamId", async (req, res, next) => {
    let players_details = [];
   try {
@@ -22,6 +23,7 @@ router.get("/teamFullDetails/:teamId", async (req, res, next) => {
   }
 });
 
+//route for search a team by name. returns partial data.
 router.get("/searchTeamByName/:teamName", async (req, res, next) => {
   try{
       let players = {};

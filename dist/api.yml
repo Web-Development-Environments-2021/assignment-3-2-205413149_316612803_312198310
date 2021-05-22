@@ -9,7 +9,7 @@ tags:
   - name: League
   - name: Players
   - name: Teams
-  - name: Games
+  - name: Matches
 paths:
   /Register:
     post:
@@ -65,7 +65,7 @@ paths:
   /league/getDetails:
     get:
       tags:
-        - league
+        - League
       summary: Return the details about the current league
       responses:
         "200":
@@ -148,6 +148,7 @@ paths:
         - in: path
           name: teamName
           description: team's name
+          example: United
           required: true
           schema:
             type: string
@@ -187,11 +188,12 @@ paths:
       summary: get full deatils about a player by name. for search operations
       description: useful for player page
       tags:
-        - players
+        - Players
       parameters:
         - in: path
           name: playerName
           description: player's name
+          example: Steven Gerard
           required: true
           schema:
             type: string
