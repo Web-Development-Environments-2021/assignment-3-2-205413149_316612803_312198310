@@ -26,11 +26,11 @@ exports.execQuery = async function (query) {
   }
 };
 
-// process.on("SIGINT", function () {
-//   if (pool) {
-//     pool.close(() => console.log("connection pool closed"));
-//   }
-// });
+process.on("SIGINT", function () {
+  if (pool) {
+    pool.close(() => console.log("connection pool closed"));
+  }
+});
 
 // poolConnect.then(() => {
 //   console.log("pool closed");
@@ -38,20 +38,20 @@ exports.execQuery = async function (query) {
 //   return sql.close();
 // });
 
-// exports.execQuery = function (query) {
-//   return new Promise((resolve, reject) => {
-//     sql
-//       .connect(config)
-//       .then((pool) => {
-//         return pool.request().query(query);
-//       })
-//       .then((result) => {
-//         // console.log(result);
-//         sql.close();
-//         resolve(result.recordsets[0]);
-//       })
-//       .catch((err) => {
-//         // ... error checks
-//       });
-//   });
-// };
+exports.execQuery = function (query) {
+  return new Promise((resolve, reject) => {
+    sql
+      .connect(config)
+      .then((pool) => {
+        return pool.request().query(query);
+      })
+      .then((result) => {
+        // console.log(result);
+        sql.close();
+        resolve(result.recordsets[0]);
+      })
+      .catch((err) => {
+        // ... error checks
+      });
+  });
+};

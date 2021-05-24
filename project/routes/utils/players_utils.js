@@ -62,7 +62,6 @@ function extractRelevantPlayerSearchData(players_info) {
   return players_info.data.data.map((player_info) => {
     if (typeof player_info.team !== 'undefined'){
       const {player_id, fullname, image_path, position_id} = player_info;
-      console.log(player_info.team.data)
       
       const { name } = player_info.team.data;
       return {
