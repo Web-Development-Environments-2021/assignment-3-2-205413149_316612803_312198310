@@ -18,6 +18,7 @@
 -- );
 -- GO
 
+<<<<<<< HEAD
 -- IF OBJECT_ID('dbo.event_log', 'U') IS NOT NULL
 -- DROP TABLE dbo.event_log
 -- GO
@@ -62,17 +63,48 @@
 -- GO
 
 -- Create the table in the specified schema
+=======
+-- -- Create a new table called 'TableName' in schema 'SchemaName'
+-- -- Drop the table if it already exists
+-- IF OBJECT_ID('dbo.matches', 'U') IS NOT NULL
+-- DROP TABLE dbo.matches
+-- GO
+-- -- Create the table in the specified schema
+-- CREATE TABLE dbo.matches
+-- (
+--     matchId INT NOT NULL PRIMARY KEY, -- primary key column
+--     matchDate DATE NOT NULL,
+--     matchHour TIME NOT NULL,
+--     hostTeam [NVARCHAR](50)  NOT NULL,
+--     guestTeam [NVARCHAR](50)  NOT NULL,
+--     staduim [NVARCHAR](50) NOT NULL,
+--     coachID [NVARCHAR](50) NOT NULL,
+--     score [NVARCHAR](50),
+-- );
+-- GO
+
+-- -- Create a new table called 'TableName' in schema 'SchemaName'
+-- -- Drop the table if it already exists
+-- IF OBJECT_ID('dbo.eventLog', 'U') IS NOT NULL
+-- DROP TABLE dbo.eventLog
+-- GO
+-- -- Create the table in the specified schema
+>>>>>>> 0f20a22... yof
 -- CREATE TABLE dbo.eventLog
 -- (   
 --     matchId INT NOT NULL,    
 --     eventDate DATE NOT NULL,
 --     eventHour TIME NOT NULL,
+<<<<<<< HEAD
 --     eventDescription [NVARCHAR](50) NOT NULL,
+=======
+>>>>>>> 0f20a22... yof
 --     CONSTRAINT matchId FOREIGN KEY (matchId)
 --     REFERENCES dbo.matches(matchId),
 --     CONSTRAINT PK_matchId_hour PRIMARY KEY (matchId, eventHour)
 -- );
 -- GO
+<<<<<<< HEAD
 
 -- INSERT INTO dbo.matches (matchId, matchDate , matchHour , hostTeam , guestTeam , staduim ,coachID,score)
 -- VALUES (27, '10/07/2021', '19:00', 'Atletico madrid', 'Paris Saint-Germain', 'Metropolitano',6, '0-3');
@@ -83,3 +115,5 @@
 
 -- -- INSERT INTO dbo.eventLog (matchId, eventDate , eventHour , eventDescription)
 -- -- VALUES (1,'12/12/2021','17:05','Goal Ronaldo');
+=======
+>>>>>>> 0f20a22... yof
