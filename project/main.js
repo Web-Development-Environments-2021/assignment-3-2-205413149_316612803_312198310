@@ -1,5 +1,5 @@
 //#region global imports
-// const DButils = require("./routes/utils/DButils");
+const DButils = require("./routes/utils/DButils");
 const axios = require("axios");
 const bcrypt = require("bcryptjs");
 require("dotenv").config();
@@ -55,22 +55,22 @@ const players = require("./routes/players");
 const matches = require("./routes/matches");
 //#endregion
 
-//#region cookie middleware
-// app.use(function (req, res, next) {
-//   if (req.session && req.session.user_id) {
-//     DButils.execQuery("SELECT user_id FROM users")
-//       .then((users) => {
-//         if (users.find((x) => x.user_id === req.session.user_id)) {
-//           req.user_id = req.session.user_id;
-//         }
-//         next();
-//       })
-//       .catch((error) => next());
-//   } else {
-//     next();
-//   }
-// });
-//#endregion
+// #region cookie middleware
+app.use(function (req, res, next) {
+  if (req.session && req.session.userId) {
+    DButils.execQuery("SELECT userId FROM users")
+      .then((users) => {
+        if (users.find((x) => x.userId === req.session.userId)) {
+          req.userId = req.session.userId;
+        }
+        next();
+      })
+      .catch((error) => next());
+  } else {
+    next();
+  }
+});
+// #endregion
 
 // ----> For cheking that our server is alive
 app.get("/alive", (req, res) => res.send("I'm alive"));
@@ -92,8 +92,8 @@ const server = app.listen(port, () => {
   console.log(`Server listen on port ${port}`);
 });
 
-// process.on("SIGINT", function () {
-//   if (server) {
-//     server.close(() => console.log("server closed"));
-//   }
-// });
+process.on("SIGINT", function () {
+  if (server) {
+    server.close(() => console.log("server closed"));
+  }
+});
