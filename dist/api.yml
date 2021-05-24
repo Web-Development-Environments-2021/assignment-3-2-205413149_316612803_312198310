@@ -208,6 +208,50 @@ paths:
                   $ref: "#/components/schemas/PlayerPreview"
         "404":
           description: playerName is not exists
+
+  /matches/searchMatches:
+    get:
+      summary: get all the matches conducted in stage 10
+      description: useful for the match page
+      tags:
+        - Matches
+      responses:
+        "200":
+          description: data about the Matches
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Match"
+        "404":
+          description: Matches is not found
+    
+  /matches/searchMatchEventLog/:matchId:
+    get:
+      summary: get all the event conducted the specified
+      description: useful for the match page
+      tags:
+        - Matches
+      parameters:
+        - in: path
+          name: matchId
+          description: match id
+          example: 5
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: data about the Matche events
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/event"
+        "404":
+          description: Match event  is not found
 components:
   schemas:
     User:
@@ -367,4 +411,57 @@ components:
           example: København
         logo_path:
           type: string
-            
+    Match:
+      type: object
+      properties:
+        matchId:
+          type: integer
+          description: match id
+          example: 4
+        matchDate:
+          type: string
+          description: match date 
+          example: '2020-12-12'
+        matchHour:
+          type: string
+          description: match hour 
+          example: '16:00'
+        hostTeam:
+          type: string
+          description: hosting team
+          example: 'Barcelona'
+        guestTeam:
+          type: string
+          description: guest team
+          example: 'Real Madrid'
+        staduim:
+          type: string
+          description: host staduim
+          example: 'Old Trafford'
+        refereeID:
+          type: integer
+          description: referee id
+          example: 5
+        score:
+          type: integer
+          description: the match result
+          example: '3-0'
+    event:
+      type: object
+      properties:
+        matchId:
+          type: integer
+          description: match id
+          example: 6
+        eventDate:
+          type: string
+          description: event date 
+          example: '2020-12-12'
+        eventHour:
+          type: string
+          description: event hour 
+          example: '16:00'
+        eventDescription:
+          type: string
+          description: event description 
+          example: 'Goal Messi'

@@ -77,9 +77,18 @@
 -- INSERT INTO dbo.matches (matchId, matchDate , matchHour , hostTeam , guestTeam , staduim ,coachID,score)
 -- VALUES (27, '10/07/2021', '19:00', 'Atletico madrid', 'Paris Saint-Germain', 'Metropolitano',6, '0-3');
 
--- UPDATE dbo.evenLog
--- SET eventDate = '12/12/2020'
--- WHERE matchId = 1;
+-- UPDATE dbo.matches
+-- SET stage = 10;
+
 
 -- -- INSERT INTO dbo.eventLog (matchId, eventDate , eventHour , eventDescription)
 -- -- VALUES (1,'12/12/2021','17:05','Goal Ronaldo');
+
+
+-- ALTER TABLE dbo.matches
+-- ADD stage INTEGER;
+
+-- ALTER TABLE dbo.matches
+-- Change "column 1" "column 2" ["Data Type"];
+
+EXEC sp_rename 'dbo.matches.coachID', 'refereeID', 'COLUMN';
