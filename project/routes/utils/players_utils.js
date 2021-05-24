@@ -44,6 +44,7 @@ async function getPlayerByName(playerName){
   return extractRelevantPlayerSearchData(players_info)
 }
 
+//when team is displayed, all players are displayed as well - but with PARTIAL data
 function extractRelevantPlayerPartialData(players_info) {
   return players_info.map((player_info) => {
     const {player_id, fullname, image_path, position_id} = player_info.data.data;
@@ -58,6 +59,7 @@ function extractRelevantPlayerPartialData(players_info) {
   });
 }
 
+// differs from extractRelevantPlayerPartialData because of the structure apears in "players_info".
 function extractRelevantPlayerSearchData(players_info) {
   return players_info.data.data.map((player_info) => {
     if (typeof player_info.team !== 'undefined'){
@@ -75,7 +77,7 @@ function extractRelevantPlayerSearchData(players_info) {
   });
 }
 
-// for later use
+// for later use. if a user presses a player pic/name, full details will be displayed.
 function extractRelevantPlayerFullData(players_info) {
   return players_info.map((player_info) => {
     const {player_id, fullname, image_path, position_id, birthdate, birthcountry, height, weight, common_name, nationality} = player_info.data.data;

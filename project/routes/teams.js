@@ -1,6 +1,5 @@
 var express = require("express");
 var router = express.Router();
-const DButils = require("./utils/DButils");
 const players_utils = require("./utils/players_utils");
 const teams_utils = require("./utils/teams_utils");
 
@@ -11,13 +10,24 @@ router.get("/teamFullDetails/:teamId", async (req, res, next) => {
     const players_details = await players_utils.getPlayersByTeam(
       req.params.teamId
     );
-    const coach_details = await teams_utils.getCoachByTeam(
+
+    const teamName = await teams_utils.getTeamNameById(
       req.params.teamId
     );
+
+    const teamMatches = await teams_utils.getTeamMatchesByName(
+      teamName
+    );
+    
+    // const coach_details = await teams_utils.getCoachByTeam(
+    //   req.params.teamId
+    // );
     // TODO - add games history
 
-    res.send({ players: players_details,
-               coach: coach_details });
+    res.send({ teamName: teamName,
+              players: players_details,
+              teamMatches: teamMatches
+               });
   } catch (error) {
     next(error);
   }

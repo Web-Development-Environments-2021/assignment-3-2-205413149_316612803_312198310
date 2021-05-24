@@ -1,4 +1,4 @@
-
+const DButils = require("./DButils");
 const axios = require("axios");
 const api_domain = "https://soccer.sportmonks.com/api/v2.0";
 // const TEAM_ID = "85";
@@ -20,6 +20,24 @@ const team = await axios.get(`${api_domain}/teams/${team_id}`, {
         });
     
     return coach.data.data
+}
+
+async function getTeamNameById(teamId){
+    let team = await axios.get(`${api_domain}/teams/${teamId}`, {
+        params: {
+            api_token: process.env.api_token,
+        },
+        });
+    
+    teamName = team.data.data.name;
+    return teamName
+}
+
+async function getTeamMatchesByName(teamName){
+    const matches = await DButils.execQuery(
+        `select * from matches where matches.hostTeam=N'${teamName}' OR matches.gusetTeam=N'${teamName}'`
+      );
+      return matches;
 }
 
 async function getTeamByName(teamName) {
@@ -44,4 +62,6 @@ function extractRelevantTeamSearchData(teams_info){
 
 exports.getCoachByTeam = getCoachByTeam;
 exports.getTeamByName = getTeamByName;
+exports.getTeamNameById = getTeamNameById;
+exports.getTeamMatchesByName = getTeamMatchesByName;
 

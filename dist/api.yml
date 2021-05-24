@@ -78,44 +78,50 @@ paths:
                   $ref: "#/components/schemas/League"
         "400":
           description: wrong input parameters
-  /users/favoritePlayers:
+
+  /users/favoriteMatches:
     get:
       tags:
         - Users
-        - Players
-      summary: Return the favorite players that were saved by user
+        - Matches
+      summary: Return the favorite matches that were saved by user
       parameters:
       responses:
         "200":
-          description: data about the user's favorites players returned
+          description: data about the user's favorites matches returned
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/PlayerPreview"
+                  $ref: "#/components/schemas/Match"
         "401":
           description: user is not authorized
     post:
-      summary: save player in the favorites list of a user
+      summary: save match in the favorites list of a user
       tags:
         - Users
-        - Players
+        - Matches
       requestBody:
         content:
           application/json:
             schema:
               type: object
               properties:
-                playerId:
-                  type: string
-                  description: player's id which the user saved
-                  example: 85
+                userId:
+                  type: Integer
+                  description: user's id
+                  example: 1
+                matchId:
+                  type: Integer
+                  description: match's id which the user saved
+                  example: 12
       responses:
         "201":
-          description: The player successfully saved as favorite
+          description: The match successfully saved as favorite
         "401":
           description: user is not authorized
+
   /teams/teamFullDetails/{teamId}:
     get:
       summary: get full deatils about a team
@@ -138,6 +144,7 @@ paths:
                 $ref: "#/components/schemas/Team"
         "404":
           description: teamId is not exists
+
   /teams/searchTeamByName/{teamName}:
     get:
       summary: get full deatils about a team by name. for search operations
@@ -161,6 +168,7 @@ paths:
                 $ref: "#/components/schemas/TeamFromSearch"
         "404":
           description: teamName is not exists
+
   /players/playerFullDetails/{playerId}:
     get:
       summary: get full deatils about a player
@@ -183,6 +191,7 @@ paths:
                 $ref: "#/components/schemas/fullPlayersDetails"
         "404":
           description: playerId is not exists
+
   /players/searchPlayerByName/{playerName}:
     get:
       summary: get full deatils about a player by name. for search operations
@@ -227,9 +236,9 @@ paths:
         "404":
           description: Matches is not found
     
-  /matches/searchMatchEventLog/:matchId:
+  /matches/searchMatchEventLog/{matchId}
     get:
-      summary: get all the event conducted the specified
+      summary: get all the events in a match
       description: useful for the match page
       tags:
         - Matches
@@ -237,13 +246,13 @@ paths:
         - in: path
           name: matchId
           description: match id
-          example: 5
+          example: 12
           required: true
           schema:
-            type: string
+            type: Integer
       responses:
         "200":
-          description: data about the Matche events
+          description: data about the Match events
           content:
             application/json:
               schema:
@@ -251,7 +260,7 @@ paths:
                 items:
                   $ref: "#/components/schemas/event"
         "404":
-          description: Match event  is not found
+          description: Match events not found
 components:
   schemas:
     User:
