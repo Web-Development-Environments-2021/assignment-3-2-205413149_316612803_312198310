@@ -62,7 +62,7 @@ paths:
       responses:
         "200":
           description: "the user has ben successfully logged out"
-  /league/getDetails:
+  /league/getLeagueDetails:
     get:
       tags:
         - League
@@ -108,10 +108,6 @@ paths:
             schema:
               type: object
               properties:
-                userId:
-                  type: Integer
-                  description: user's id
-                  example: 1
                 matchId:
                   type: Integer
                   description: match's id which the user saved
@@ -236,20 +232,20 @@ paths:
         "404":
           description: Matches is not found
     
-  /matches/searchMatchEventLog/{matchId}
+  /matches/searchMatchEventLog/{matchId}:
     get:
-      summary: get all the events in a match
+      summary: get all the events in a PAST match only
       description: useful for the match page
       tags:
         - Matches
       parameters:
         - in: path
           name: matchId
-          description: match id
-          example: 12
+          description: match's id
+          example: 5
           required: true
           schema:
-            type: Integer
+            type: integer
       responses:
         "200":
           description: data about the Match events
@@ -258,7 +254,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/event"
+                  $ref: "#/components/schemas/Event"
         "404":
           description: Match events not found
 components:
@@ -312,14 +308,14 @@ components:
           minLength: 3
           maxLength: 8
           description: username conatins letters only
-          example: naorbe
+          example: ladygaga
         password:
           type: string
           minLength: 5
           maxLength: 10
           format: password
           description: password conatins at least one number and one special char
-          example: naor@55
+          example: lady@56
     League:
       type: object
       properties:
@@ -335,74 +331,91 @@ components:
           type: string
           description: current stage name
           example: Championship Round
+        next_game:
+          type: array
+          items:
+            type: object
+            $ref: "#/components/schemas/Match"
     PlayerPreview:
       type: object
       properties:
+        player_id:
+          type: integer
+          description: player's id
+          example: 1057
         name:
           type: string
           description: player's name
-          example: Sten Michael Grytebust
+          example: Gerard Deulofeu Lázaro
         image:
           type: string
           description: player's image
           format: URL
-          example: https://cdn.sportmonks.com/images/soccer/players/11/84587.png
+          example: https://cdn.sportmonks.com/images/soccer/players/1/1057.png
         position:
           type: integer
           description: player's position in team
-          example: 1
+          example: 4
         team_name:
           type: string
           description: player's team name
-          example: København
+          example: Udinese
     fullPlayersDetails:
       type: object
       properties:
+        id:
+          type: integer
+          description: player's id
+          example: 50
         name:
           type: string
           description: player's name
-          example: Sten Michael Grytebust
+          example: Steven Gerrard
         commonname:
           type: string
           description: player's common name
-          example: J. Jordan
+          example: S. Gerrard
         image:
           type: string
           description: player's image
           format: URL
-          example: https://cdn.sportmonks.com/images/soccer/players/11/84587.png
+          example: https://cdn.sportmonks.com/images/soccer/players/18/50.png
         position:
           type: integer
           description: player's position in team
-          example: 1
+          example: 9
         teamname:
           type: string
           description: player's team name
-          example: København
+          example: Rangers
         birthdate:
           type: string
           description: player's birthdate
-          example: 07/07/1991
+          example: 30/05/1980
         birthcountry:
           type: string
           description: player's country of birth
-          example: Scotalnd
+          example: England
         height:
           type: integer
           description: player's height
-          example: 180 cm
+          example: 183 cm
         weight:
           type: string
           description: player's weight
-          example: 85 kg # may be null
+          example: 83 kg # may be null
         nationality:
           type: string
           description: player's nationality
-          example: Scotland
+          example: England
     Team:
       type: object
       properties:
-        name:
+        id:
+          type: integer
+          description: teans's id
+          example: 819
+        teamName:
           type: string
           description: team name
           example: København
@@ -411,66 +424,77 @@ components:
           items:
             type: object
             $ref: "#/components/schemas/PlayerPreview"
+        matches:
+          type: array
+          items:
+            type: object
+            $ref: "#/components/schemas/Match"
     TeamFromSearch:
       type: object
       properties:
-        name:
+        id:
+          type: integer
+          description: teams's id
+          example: 819
+        teamName:
           type: string
           description: team name
           example: København
         logo_path:
           type: string
+          example: https://cdn.sportmonks.com/images//soccer/teams/30/62.png
+
     Match:
       type: object
       properties:
         matchId:
           type: integer
           description: match id
-          example: 4
+          example: 5
         matchDate:
           type: string
           description: match date 
-          example: '2020-12-12'
+          example: 01/01/2021
         matchHour:
           type: string
           description: match hour 
-          example: '16:00'
+          example: 19:00
         hostTeam:
           type: string
           description: hosting team
-          example: 'Barcelona'
+          example: Charlton Athletic
         guestTeam:
           type: string
           description: guest team
-          example: 'Real Madrid'
+          example: Sunderland
         staduim:
           type: string
           description: host staduim
-          example: 'Old Trafford'
+          example: Metropolitano
         refereeID:
           type: integer
           description: referee id
-          example: 5
+          example: 6
         score:
-          type: integer
+          type: string
           description: the match result
-          example: '3-0'
-    event:
+          example: 0-3
+    Event:
       type: object
       properties:
         matchId:
           type: integer
           description: match id
-          example: 6
+          example: 10
         eventDate:
           type: string
           description: event date 
-          example: '2020-12-12'
+          example: 2021-01-01T00:00:00.000Z
         eventHour:
           type: string
           description: event hour 
-          example: '16:00'
+          example: 1970-01-01T21:33:00.000Z
         eventDescription:
           type: string
           description: event description 
-          example: 'Goal Messi'
+          example: Goal Adam Armstrong

@@ -17,7 +17,6 @@ router.get("/searchMatches", async (req, res, next) => {
 //route for search of a past games by stage
 router.get("/searchMatchEventLog/:matchId", async (req, res, next) => {
     try{
-        console.log(req.params.matchId);
         let events = {};
         events = await matches_utils.getMatchEventByMatch(req.params.matchId);
         res.send(events);

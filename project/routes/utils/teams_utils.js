@@ -35,7 +35,7 @@ async function getTeamNameById(teamId){
 
 async function getTeamMatchesByName(teamName){
     const matches = await DButils.execQuery(
-        `select * from matches where matches.hostTeam=N'${teamName}' OR matches.gusetTeam=N'${teamName}'`
+        `select * from matches where matches.hostTeam=N'${teamName}' OR matches.guestTeam=N'${teamName}'`
       );
       return matches;
 }
@@ -54,8 +54,8 @@ function extractRelevantTeamSearchData(teams_info){
         const {id, name, logo_path} = team_info;
         return {
           team_id: id,
-          logo: logo_path,
           team_name: name,
+          logo: logo_path,          
         };
       });
 }

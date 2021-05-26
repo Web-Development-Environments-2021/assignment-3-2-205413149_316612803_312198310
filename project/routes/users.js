@@ -33,14 +33,11 @@ router.post("/favoriteMatches", async (req, res, next) => {
   }
 });
 
-/**
- * This path returns the favorites matches that were saved by the logged-in user
- */
 router.get("/favoriteMatches", async (req, res, next) => {
   try {
     const userId = req.session.userId;
     const matchIds = await users_utils.getFavoriteMatches(userId);
-    const matches_info = await matches_utils.getAllMatchesByIds(matchIds);
+    const matches_info = await matches_utils.getAllMatchesByIds(matchIds);   
     res.status(200).send(matches_info);
   } catch (error) {
     next(error);

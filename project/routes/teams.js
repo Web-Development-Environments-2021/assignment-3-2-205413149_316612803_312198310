@@ -7,15 +7,15 @@ const teams_utils = require("./utils/teams_utils");
 router.get("/teamFullDetails/:teamId", async (req, res, next) => {
    let players_details = [];
   try {
-    const players_details = await players_utils.getPlayersByTeam(
-      req.params.teamId
-    );
+    // const players_details = await players_utils.getPlayersByTeam(
+    //   req.params.teamId
+    // );
 
     const teamName = await teams_utils.getTeamNameById(
       req.params.teamId
     );
 
-    const teamMatches = await teams_utils.getTeamMatchesByName(
+    const matches = await teams_utils.getTeamMatchesByName(
       teamName
     );
     
@@ -24,9 +24,10 @@ router.get("/teamFullDetails/:teamId", async (req, res, next) => {
     // );
     // TODO - add games history
 
-    res.send({ teamName: teamName,
+    res.send({ id: req.params.teamId,
+              teamName: teamName,
               players: players_details,
-              teamMatches: teamMatches
+              teamMatches: matches
                });
   } catch (error) {
     next(error);
