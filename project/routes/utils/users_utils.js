@@ -21,7 +21,7 @@ async function markMatchAsFavorite(userId, matchId) {
 
 async function getFavoriteMatches(userId) {
   const playerIds = await DButils.execQuery(
-    `select matchId from FavoriteMatches where userId='${userId}'`
+    `select matchId from FavoriteMatches where userId=${userId}`
   );
   return playerIds;
 }

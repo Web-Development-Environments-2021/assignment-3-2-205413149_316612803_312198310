@@ -52,7 +52,8 @@
 -- CREATE TABLE dbo.FavoriteMatches
 -- (
 --     userId INT NOT NULL, 
---     matchId INT NOT NULL
+--     matchId INT NOT NULL,
+--     PRIMARY KEY (userId, matchId)
 -- );
 -- GO
 
@@ -88,3 +89,4 @@
 
 -- INSERT INTO dbo.eventLog (matchId, eventDate , eventHour , eventDescription)
 -- VALUES (1,'12/12/2021','17:05','Goal Ronaldo');
+
