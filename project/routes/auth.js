@@ -8,7 +8,6 @@ router.post("/Register", async (req, res, next) => {
     // parameters exists
     // valid parameters
     // username exists
-
     const users = await DButils.execQuery(
       "SELECT username FROM dbo.users"
     );
@@ -36,18 +35,22 @@ router.post("/Register", async (req, res, next) => {
   }
 });
 
+function checkIfLoginParamsExist(loginObj){
+  if (!('username' in loginObj) || !('password' in loginObj) ){
+    return false;
+  }
+  return true;
+}
+
 router.post("/Login", async (req, res, next) => {
   try {
-    const user = (
-      await DButils.execQuery(
-        `SELECT * FROM dbo.users WHERE username = '${req.body.username}'`
-      )
-    )[0];
-    // user = user[0];
-    console.log(user);
+    //check Parameters recieved from client
+    if(!checkIfLoginParamsExist(req.body)){
+      throw {status: 400, message: "Bad Request. Wrong Input Parameters"};
+    }
 
-    // check that username exists & the password is correct
-    if (!user || !bcrypt.compareSync(req.body.password, user.password)) {
+    const user = await auth_domain.loginUser(req.body.username, req.body.password)
+    if (user === null){
       throw { status: 401, message: "Username or Password incorrect" };
     }
 

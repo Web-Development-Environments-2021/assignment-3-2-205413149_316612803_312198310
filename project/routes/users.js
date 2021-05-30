@@ -8,6 +8,7 @@ const matches_utils = require("./utils/matches_utils");
  * Authenticate all incoming requests by middleware
  */
 router.use(async function (req, res, next) {
+  
   if (req.session && req.session.userId) {
     DButils.execQuery("SELECT userId FROM users")
       .then((users) => {
@@ -26,8 +27,20 @@ router.post("/favoriteMatches", async (req, res, next) => {
   try {
     const userId = req.session.userId;
     const matchId = req.body.matchId;
+    let numOfTeams = await matches_utils.getMatchById(matchId)
+
+    if(numOfTeams == 0){      
+      throw{status: 404, message: "matchId does not exist"}
+    }    
+
+    numOfTeams = await users_utils.getFavoriteMatchByMatchId(matchId);
+    if(numOfTeams > 0){
+        throw{status: 401, message: "match already added to user's favorites."}
+      }
+
     await users_utils.markMatchAsFavorite(userId, matchId);
     res.status(201).send("The match successfully saved as favorite");
+
   } catch (error) {
     next(error);
   }
@@ -41,6 +54,7 @@ router.get("/favoriteMatches", async (req, res, next) => {
   try {
     const userId = req.session.userId;
     const matchIds = await users_utils.getFavoriteMatches(userId);
+    if(matchIds.length == 0){throw{status: 404, message: "no matches to the specified user"}}
     const matches_info = await matches_utils.getAllMatchesByIds(matchIds);   
     res.status(200).send(matches_info);
   } catch (error) {

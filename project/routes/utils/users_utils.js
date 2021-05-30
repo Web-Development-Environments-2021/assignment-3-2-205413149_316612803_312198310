@@ -14,6 +14,7 @@ const DButils = require("./DButils");
 // }
 
 async function markMatchAsFavorite(userId, matchId) {
+
   await DButils.execQuery(
     `insert into FavoriteMatches values ('${userId}',${matchId})`
   );
@@ -26,5 +27,14 @@ async function getFavoriteMatches(userId) {
   return playerIds;
 }
 
+async function getFavoriteMatchByMatchId(matchId){
+  const matches = await DButils.execQuery(
+    `select * from FavoriteMatches where FavoriteMatches.matchId=${matchId}`
+    
+  );
+  return matches.length;
+}
+
 exports.markMatchAsFavorite = markMatchAsFavorite;
 exports.getFavoriteMatches = getFavoriteMatches;
+exports.getFavoriteMatchByMatchId = getFavoriteMatchByMatchId;

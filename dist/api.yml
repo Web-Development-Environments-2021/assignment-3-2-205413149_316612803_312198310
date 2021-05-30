@@ -10,6 +10,7 @@ tags:
   - name: Players
   - name: Teams
   - name: Matches
+  - name: FAR
 paths:
   /Register:
     post:
@@ -26,8 +27,8 @@ paths:
       responses:
         "201":
           description: A new user has been added
-        "400":
-          description: wrong input parameters
+        "409":
+          description: Username taken
   /Login:
     post:
       tags:
@@ -53,7 +54,9 @@ paths:
           #       example: session=87s97sdhgf279293f8w0e9
             # Note that the Set-Cookie header and securitySchemes are not connected in any way, and the Set-Header definition is for documentation purposes only.
         "401":
-          description: Authentication failed
+          description: Username or Password incorrect
+        "400":
+          description: Bad Request. Wrong Input Parameters
   /logout:
     post:
       tags:
@@ -73,9 +76,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/League"
+                $ref: "#/components/schemas/League"
         "400":
           description: wrong input parameters
 
@@ -95,10 +96,10 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/Match"
-        "401":
-          description: user is not authorized
+        "404":
+          description: no matches to the specified user
     post:
-      summary: save match in the favorites list of a user
+      summary: save a match in the favorites list of a user. user has to be logged in.
       tags:
         - Users
         - Matches
@@ -111,12 +112,14 @@ paths:
                 matchId:
                   type: Integer
                   description: match's id which the user saved
-                  example: 12
+                  example: 1
       responses:
         "201":
           description: The match successfully saved as favorite
+        "404":
+          description: matchId does not exist
         "401":
-          description: user is not authorized
+          description: match already added to user's favorites
 
   /teams/teamFullDetails/{teamId}:
     get:
@@ -185,7 +188,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/fullPlayersDetails"
-        "404":
+        "403":
           description: playerId is not exists
 
   /players/searchPlayerByName/{playerName}:
@@ -242,7 +245,7 @@ paths:
         - in: path
           name: matchId
           description: match's id
-          example: 5
+          example: 1
           required: true
           schema:
             type: integer
@@ -254,9 +257,26 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/Event"
+                  $ref: "#/components/schemas/EventGET"
         "404":
           description: Match events not found
+  /far/addMatch:
+    post:
+      summary: add match to macthes table
+      description: useful for the matches assignment algorithm
+      tags:
+        - Matches
+        - FAR
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/MatchPOST"
+      responses:
+        "200":
+          description: Match added successfully
+        "500":
+          description: user is not in FAR table
 components:
   schemas:
     User:
@@ -449,29 +469,41 @@ components:
       properties:
         matchId:
           type: integer
-          description: match id
-          example: 5
+          description: match id. no need to supply - when added to DB. added automatically.
+          example: 1
+        league:
+          type: integer
+          description: league's id
+          example: 271
+        season:
+          type: string
+          description: league's current season
+          example: "2017/2018" 
+        stage:
+          type: integer
+          description: stage in which the match occur in
+          example: 10
         matchDate:
           type: string
           description: match date 
-          example: 01/01/2021
+          example: '2021-01-01'
         matchHour:
           type: string
           description: match hour 
-          example: 19:00
+          example: '19:00'
         hostTeam:
           type: string
           description: hosting team
-          example: Charlton Athletic
+          example: AGF
         guestTeam:
           type: string
           description: guest team
-          example: Sunderland
-        staduim:
+          example: SønderjyskE
+        stadium:
           type: string
           description: host staduim
           example: Metropolitano
-        refereeID:
+        refereeId:
           type: integer
           description: referee id
           example: 6
@@ -479,21 +511,120 @@ components:
           type: string
           description: the match result
           example: 0-3
-    Event:
+
+    MatchPOST:
+      type: object
+      properties:
+        league:
+          type: integer
+          description: league's id 
+          example: 271
+        seasson:
+          type: string
+          description: league's season 
+          example: "2017/2018"
+        stage:
+          type: integer
+          description: stage in which the match occur in
+          example: 10
+        matchDate:
+          type: string
+          description: match date 
+          example: '2021-01-01'
+        matchHour:
+          type: string
+          description: match hour 
+          example: '19:00'
+        hostTeam:
+          type: string
+          description: hosting team
+          example: AGF
+        guestTeam:
+          type: string
+          description: guest team
+          example: SønderjyskE
+        stadium:
+          type: string
+          description: host staduim
+          example: Metropolitano
+        refereeId:
+          type: integer
+          description: referee id
+          example: 6
+        score:
+          type: string
+          description: the match result
+          example: 0-3
+
+    EventGET:
       type: object
       properties:
         matchId:
           type: integer
-          description: match id
-          example: 10
+          description: match id.
+          example: 1
+        eventId:
+          type: integer
+          description: event id. no need to supply - when added to DB. added automatically.
+          example: 1
+        event_type:
+          type: string
+          description: event type as enum
+          enum: 
+            - Goal
+            - offSide
+            - Fault
+            - YellowCard
+            - RedCard
+            - Injury
+            - Sub
         eventDate:
           type: string
           description: event date 
-          example: 2021-01-01T00:00:00.000Z
+          example: '2021-01-01T00:00:00.000Z'
         eventHour:
           type: string
           description: event hour 
-          example: 1970-01-01T21:33:00.000Z
+          example: '19:00'
+        minuteInGame:
+          type: int
+          description: minute in game of the event 
+          example: 73
+        eventDescription:
+          type: string
+          description: event description 
+          example: Goal Adam Armstrong
+
+    EventPost:
+      type: object
+      properties:
+        matchId:
+          type: integer
+          description: match id.
+          example: 1        
+        event_type:
+          type: string
+          description: event type as enum
+          enum: 
+            - Goal
+            - offSide
+            - Fault
+            - YellowCard
+            - RedCard
+            - Injury
+            - Sub
+        eventDate:
+          type: string
+          description: event date 
+          example: '2021-01-01T00:00:00.000Z'
+        eventHour:
+          type: string
+          description: event hour 
+          example: '19:00'
+        minuteInGame:
+          type: int
+          description: minute in game of the event 
+          example: 73
         eventDescription:
           type: string
           description: event description 

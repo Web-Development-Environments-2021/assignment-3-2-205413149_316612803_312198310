@@ -28,15 +28,6 @@ async function getAllMatchesByIds(matchIds){
   return matches_info
 }
 
-async function getMatchById(matchId) {
-  const matches = await DButils.execQuery(
-    `select * from matches where matches.matchId=${matchId}`
-  );
-
-  return matches;
-}
-
-
 async function getAllMatchesByIds(matchIds){
   let match_ids_array = [];
   matchIds.map((element) => match_ids_array.push(element.matchId)); //extracting the matches ids into array
@@ -51,11 +42,9 @@ async function getAllMatchesByIds(matchIds){
 async function getMatchById(matchId) {
   const matches = await DButils.execQuery(
     `select * from matches where matches.matchId=${matchId}`
-    
   );
 
-  console.log(matches)
-  return matches;
+  return matches.length;
 }
 
 
