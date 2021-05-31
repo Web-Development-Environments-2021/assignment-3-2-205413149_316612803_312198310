@@ -34,7 +34,7 @@ router.post("/addMatch", async (req, res, next) => {
              refereeId: refereeId, 
              score: score
         })
-        res.send("Match added successfully");
+        res.status(200).send("Match added successfully");
 
     } catch(error){
         next(error);

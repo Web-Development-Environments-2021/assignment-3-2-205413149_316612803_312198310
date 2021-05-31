@@ -232,8 +232,9 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/Match"
-        "404":
-          description: Matches is not found
+
+        "500":
+          description: Match events not found in the server
     
   /matches/searchMatchEventLog/{matchId}:
     get:
@@ -259,7 +260,9 @@ paths:
                 items:
                   $ref: "#/components/schemas/EventGET"
         "404":
-          description: Match events not found
+          description: Match Id not in the EventLog
+        "500":
+          description: Match Id not Found Because Of A Server Error
   /far/addMatch:
     post:
       summary: add match to macthes table

@@ -9,7 +9,7 @@ async function checkIfFarIsValid(userId){
         // `select ifnull((select refereeId from referees where refereeId=${userId}), No Result Found)`
         `select * from FARs where FARId=${userId}`
     )
-    if(referee[0] === undefined){
+    if(referee[0] === undefined || Object.size(referee) == 0){
         return false;
     }
     return true;
