@@ -49,7 +49,7 @@ router.post("/Login", async (req, res, next) => {
       throw {status: 400, message: "Bad Request. Wrong Input Parameters"};
     }
 
-    const user = await auth_domain.loginUser(req.body.username, req.body.password)
+    const user = await loginUser(req.body.username, req.body.password)
     if (user === null){
       throw { status: 401, message: "Username or Password incorrect" };
     }
@@ -68,5 +68,26 @@ router.post("/Logout", function (req, res) {
   req.session.reset(); // reset the session info --> send cookie when  req.session == undefined!!
   res.send({ success: true, message: "logout succeeded" });
 });
+
+
+async function loginUser(username, password){
+  //Sending request to the Data Layer
+  const user = await getUser(username);
+  // check that username exists & the password is correct
+  if (!user || !bcrypt.compareSync(password, user.password)) {
+    return null;
+  }
+  return user;
+}
+
+async function getUser(username){
+  //get user from DB
+  const user = (
+      await DButils.execQuery(
+        `SELECT * FROM dbo.users WHERE username = '${username}'`
+      )
+    )[0];
+  return user;
+}
 
 module.exports = router;
