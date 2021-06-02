@@ -31,7 +31,7 @@ router.get("/searchMatchEventLog/:matchId", async (req, res, next) => {
         let eventsLength = Object.size(events);
         if(eventsLength == 0)
         {
-            res.status(404).send("Match Id not in the EventLog");
+            res.status(404).send("Match does not have an eventLog.");
             
         }
         else

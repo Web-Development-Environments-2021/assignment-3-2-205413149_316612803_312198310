@@ -219,7 +219,8 @@ paths:
 
   /matches/searchMatches:
     get:
-      summary: get all the matches conducted in stage 10
+      summary: get all the matches conducted in stage 10. for PAST matches only, 
+                use /matches/searchMatchEventLog/{matchId} route for extra info.
       description: useful for the match page
       tags:
         - Matches
@@ -238,7 +239,8 @@ paths:
     
   /matches/searchMatchEventLog/{matchId}:
     get:
-      summary: get all the events in a PAST match only
+      summary: get all the events in a PAST match only.
+              Use this route after extracting match obj from Matches table.
       description: useful for the match page
       tags:
         - Matches
@@ -260,7 +262,7 @@ paths:
                 items:
                   $ref: "#/components/schemas/EventGET"
         "404":
-          description: Match Id not in the EventLog
+          description: Match does not have an eventLog
         "500":
           description: Match Id not Found Because Of A Server Error
   /far/addMatch:
@@ -280,6 +282,8 @@ paths:
           description: Match added successfully
         "500":
           description: user is not in FAR table
+        "400":
+          description: Bad Request. Wrong Input Parameters
 components:
   schemas:
     User:
@@ -522,7 +526,7 @@ components:
           type: integer
           description: league's id 
           example: 271
-        seasson:
+        season:
           type: string
           description: league's season 
           example: "2017/2018"
@@ -532,7 +536,7 @@ components:
           example: 10
         matchDate:
           type: string
-          description: match date 
+          description: match date. in the format YYYY-MM-DD ONLY!.
           example: '2021-01-01'
         matchHour:
           type: string

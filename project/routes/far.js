@@ -16,6 +16,23 @@ router.use("/addMatch", async (req, res, next) => {
 
 router.post("/addMatch", async (req, res, next) => {
     try{
+
+        if(!('league' in req.body) ||
+        !('season' in req.body) ||
+        !('stage' in req.body) ||
+        !('matchDate' in req.body) ||
+        !('matchHour' in req.body) ||
+        !('hostTeam' in req.body) ||
+        !('guestTeam' in req.body) ||
+        !('stadium' in req.body) ||
+        !('refereeId' in req.body)){
+            throw{status: 400, message: "Bad Request. Wrong Input Parameters"}
+        }
+
+        if(!(/^(\d{4})\-(\d{1,2})\-(\d{1,2})$/.test(req.body.matchDate))){
+            throw{status: 400, message: "Bad Request. Wrong Input Parameters"}
+        }
+        
         let score = null;
         if (req.body.score !== undefined){
             score = req.body.score
