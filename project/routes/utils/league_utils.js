@@ -14,6 +14,17 @@ async function getLeagueDetails() {
       },
     }
   );
+  
+  if(league.data.data.current_stage_id === null){
+    return {
+      league_name: league.data.data.name,
+      current_season_name: league.data.data.season.data.name,
+      current_stage_name: null,
+      nextGame: null,
+      // next game details should come from DB
+    };
+  }
+
   const stage = await axios.get(
     `${api_domain}/stages/${league.data.data.current_stage_id}`,
     {

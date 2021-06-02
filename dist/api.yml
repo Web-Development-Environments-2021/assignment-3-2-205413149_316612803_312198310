@@ -267,7 +267,7 @@ paths:
           description: Match Id not Found Because Of A Server Error
   /far/addMatch:
     post:
-      summary: add match to macthes table
+      summary: add a match to matches table
       description: useful for the matches assignment algorithm
       tags:
         - Matches

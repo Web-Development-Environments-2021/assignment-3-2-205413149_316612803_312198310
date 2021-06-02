@@ -107,5 +107,5 @@
 -- VALUES (2, 'Goal' , '2021-01-02','21:45', 45, 'Goal Tevez');
 
 
--- INSERT INTO dbo.FARs (FARId)
+ -- INSERT INTO dbo.FARs (FARId)
 -- VALUES (1)
