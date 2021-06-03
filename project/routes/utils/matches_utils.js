@@ -16,35 +16,34 @@ async function getMatchEventByMatch(matchId) {
   return events;
 }
 
-async function getAllMatchesByIds(matchIds){
-  let match_ids_array = [];
-  matchIds.map((element) => match_ids_array.push(element.matchId)); //extracting the matches ids into array
-  let results = [];
-  match_ids_array.map((id) =>{
-    results.push(getMatchById(id));      
-    });
-  let matches_info = await Promise.all(results);
-
-  return matches_info
-}
 
 async function getAllMatchesByIds(matchIds){
   let match_ids_array = [];
   matchIds.map((element) => match_ids_array.push(element.matchId)); //extracting the matches ids into array
   let results = [];
   match_ids_array.map((id) =>{
-    results.push(getMatchById(id));      
+    results.push(getMatchByIdFullDetails(id));      
     });
   let matches_info = await Promise.all(results);
   return matches_info
 }
 
+//chack amount of matches only
 async function getMatchById(matchId) {
   const matches = await DButils.execQuery(
     `select * from matches where matches.matchId=${matchId}`
   );
 
   return matches.length;
+}
+
+//get full details of match.
+async function getMatchByIdFullDetails(matchId) {
+  const matches = await DButils.execQuery(
+    `select * from matches where matches.matchId=${matchId}`
+  );
+
+  return matches;
 }
 
 

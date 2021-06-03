@@ -83,8 +83,7 @@ paths:
   /users/favoriteMatches:
     get:
       tags:
-        - Users
-        - Matches
+        - Users        
       summary: Return the favorite matches that were saved by user
       parameters:
       responses:
@@ -101,8 +100,7 @@ paths:
     post:
       summary: save a match in the favorites list of a user. user has to be logged in.
       tags:
-        - Users
-        - Matches
+        - Users        
       requestBody:
         content:
           application/json:
@@ -269,8 +267,7 @@ paths:
     post:
       summary: add a match to matches table
       description: useful for the matches assignment algorithm
-      tags:
-        - Matches
+      tags:        
         - FAR
       requestBody:
         content:
