@@ -42,7 +42,8 @@ async function getPlayerByName(playerName){
       include: "team",
     },
     })
-  
+    
+  // players_info = players_info.data.data.filter((player) => player.data.data.country_id == 320) // add league 
   return extractRelevantPlayerSearchData(players_info)
 }
 
