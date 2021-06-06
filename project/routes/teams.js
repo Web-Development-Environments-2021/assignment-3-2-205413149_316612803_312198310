@@ -39,7 +39,7 @@ router.get("/searchTeamByName/:teamName", async (req, res, next) => {
   try{     
 
       const team = await teams_utils.getTeamByName(req.params.teamName);
-      if(team.length == 0){
+      if(team === undefined || team.length == 0){
         throw {status: 404, message: "Bad Request. no such team."}
       }
       

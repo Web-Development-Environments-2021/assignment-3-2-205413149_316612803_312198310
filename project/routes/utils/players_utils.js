@@ -28,7 +28,7 @@ async function getPlayersInfo(players_ids_list, teamSearch=false) {
       })
     )
   );
-  let players_info = await Promise.all(promises);
+  let players_info = await Promise.all(promises.map (p => p.catch(e => e)));
   if(teamSearch){
     return extractRelevantPlayerPartialData(players_info)
   }
@@ -43,8 +43,26 @@ async function getPlayerByName(playerName){
     },
     })
     
-  // players_info = players_info.data.data.filter((player) => player.data.data.country_id == 320) // add league 
+  // players_info = getRelevantPlayersToLeague(players_info) // add league 
   return extractRelevantPlayerSearchData(players_info)
+}
+
+async function getRelevantPlayersToLeague(players_info)
+{
+  let players = []
+  // if (typeof player_info.team !== 'undefined'){
+  players_info.map(async (player_info) => {
+    axios.get(`${api_domain}/teams/${player_info.team_id}/current`, {
+      params: {
+        api_token: process.env.api_token,
+      }}).then(function(res){
+        if (res.data.data.length != 0){
+           players.push(player_info);
+        }
+      }).catch((err) => {console.log(err)})
+  })
+
+  return players;
 }
 
 //when team is displayed, all players are displayed as well - but with PARTIAL data
@@ -82,21 +100,24 @@ function extractRelevantPlayerSearchData(players_info) {
 // for later use. if a user presses a player pic/name, full details will be displayed.
 function extractRelevantPlayerFullData(players_info) {
   return players_info.map((player_info) => {
-    const {player_id, fullname, image_path, position_id, birthdate, birthcountry, height, weight, common_name, nationality} = player_info.data.data;
-    const { name } = player_info.data.data.team.data;
-    return {
-      player_id: player_id,
-      name: fullname,
-      common_name: common_name,
-      image: image_path,
-      position: position_id,
-      team_name: name,
-      birth_date: birthdate,
-      birth_country: birthcountry,
-      height: height,
-      weight: weight, // may be null      
-      nationality: nationality
-    };
+    if('data' in player_info && 'data' in player_info.data){
+      const {player_id, fullname, image_path, position_id, birthdate, birthcountry, height, weight, common_name, nationality} = player_info.data.data;
+      const { name } = player_info.data.data.team.data;
+      return {
+        player_id: player_id,
+        name: fullname,
+        common_name: common_name,
+        image: image_path,
+        position: position_id,
+        team_name: name,
+        birth_date: birthdate,
+        birth_country: birthcountry,
+        height: height,
+        weight: weight, // may be null      
+        nationality: nationality
+      };
+    }
+   
   });
 }
 
@@ -109,3 +130,4 @@ async function getPlayersByTeam(team_id) {
 exports.getPlayersByTeam = getPlayersByTeam;
 exports.getPlayersInfo = getPlayersInfo;
 exports.getPlayerByName = getPlayerByName;
+exports.getRelevantPlayersToLeague = getRelevantPlayersToLeague;

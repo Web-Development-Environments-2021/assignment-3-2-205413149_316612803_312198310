@@ -19,7 +19,7 @@ router.use(async function (req, res, next) {
       })
       .catch((err) => next(err));
   } else {
-    res.sendStatus(401);
+    res.sendStatus(403);
   }
 });
 

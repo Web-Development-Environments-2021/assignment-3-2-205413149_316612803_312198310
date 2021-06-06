@@ -21,11 +21,22 @@ router.get("/searchPlayerByName/:playerName", async (req, res, next) => {
     try{
         let players = {};
         players = await players_utils.getPlayerByName(req.params.playerName);
-        res.send(players);
+        res.send(players.slice(0, 20));
 
     } catch(error){
         next(error);
     }
+})
+
+router.get("/try", async (req, res, next) => {
+  try{
+      let players = [{team_id: 2905},{team_id: 51}];
+      p = await players_utils.getRelevantPlayersToLeague(players);
+      res.send(p);
+
+  } catch(error){
+      next(error);
+  }
 })
 
 module.exports = router;

@@ -6,7 +6,8 @@ router.use("/addMatch", async (req, res, next) => {
     try{
         //check if user has FAR access
         const isValid = await far_utils.checkIfFarIsValid(req.session.userId); 
-        isValid ? next() :  () => {throw { status: 500, message: "user is not in FAR table" }};
+        if(isValid){next()}
+        else{throw { status: 500, message: "user is not in FAR table OR try to log in first" }};
         
 
     } catch(error){

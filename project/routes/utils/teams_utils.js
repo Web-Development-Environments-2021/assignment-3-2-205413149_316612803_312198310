@@ -55,14 +55,20 @@ return extractRelevantTeamSearchData(teams_info)
 }
 
 function extractRelevantTeamSearchData(teams_info){
-    return teams_info.data.data.map((team_info) => {
-        const {id, name, logo_path} = team_info;
-        return {
-          team_id: id,
-          team_name: name,
-          logo: logo_path,          
-        };
-      });
+    if(teams_info.length != 0){
+        return teams_info.map((team_info) => {
+            const {id, name, logo_path} = team_info;
+            return {
+              team_id: id,
+              team_name: name,
+              logo: logo_path,          
+            };
+          });
+    }
+    else{
+        return [];
+    }
+    
 }
 
 async function getAllTeamsByCountryId(countryId) {
@@ -81,17 +87,18 @@ return extractRelevantTeamSearchData(teams_info)
 function removeByLeagueId(teams_info)
 {
     let index = 0;
+    let validTeams = [];
      teams_info.data.data.map((team_info) => {
         const {league} = team_info;
         const {id} = league.data;
 
-        if(id != League_ID)
+        if(id == League_ID)
         {
-            teams_info.data.data.slice(index);
+            validTeams.push(team_info);
         }
         index++;
       });
-      return teams_info;
+      return validTeams;
 }
 
 

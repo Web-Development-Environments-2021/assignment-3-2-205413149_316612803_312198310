@@ -85,7 +85,6 @@ paths:
       tags:
         - Users        
       summary: Return the favorite matches that were saved by user
-      parameters:
       responses:
         "200":
           description: data about the user's favorites matches returned
@@ -110,7 +109,7 @@ paths:
                 matchId:
                   type: Integer
                   description: match's id which the user saved
-                  example: 1
+                  example: 3
       responses:
         "201":
           description: The match successfully saved as favorite
@@ -118,6 +117,8 @@ paths:
           description: matchId does not exist
         "401":
           description: match already added to user's favorites
+        "403":
+          description: Forbidden
 
   /teams/teamFullDetails/{teamId}:
     get:
@@ -474,7 +475,7 @@ components:
         matchId:
           type: integer
           description: match id. no need to supply - when added to DB. added automatically.
-          example: 1
+          example: 3
         league:
           type: integer
           description: league's id
@@ -482,7 +483,7 @@ components:
         season:
           type: string
           description: league's current season
-          example: "2017/2018" 
+          example: "2020/2021" 
         stage:
           type: integer
           description: stage in which the match occur in
@@ -490,7 +491,7 @@ components:
         matchDate:
           type: string
           description: match date 
-          example: '2021-01-01'
+          example: '2021-07-11'
         matchHour:
           type: string
           description: match hour 
@@ -498,23 +499,23 @@ components:
         hostTeam:
           type: string
           description: hosting team
-          example: AGF
+          example: Randers
         guestTeam:
           type: string
           description: guest team
-          example: SønderjyskE
+          example: AGF
         stadium:
           type: string
           description: host staduim
-          example: Metropolitano
+          example: Camp Nou
         refereeId:
           type: integer
           description: referee id
-          example: 6
+          example: 8
         score:
           type: string
           description: the match result
-          example: 0-3
+          example: null
 
     MatchPOST:
       type: object
@@ -526,7 +527,7 @@ components:
         season:
           type: string
           description: league's season 
-          example: "2017/2018"
+          example: "2020/2021"
         stage:
           type: integer
           description: stage in which the match occur in
@@ -534,7 +535,7 @@ components:
         matchDate:
           type: string
           description: match date. in the format YYYY-MM-DD ONLY!.
-          example: '2021-01-01'
+          example: '2021-07-11'
         matchHour:
           type: string
           description: match hour 
@@ -542,23 +543,23 @@ components:
         hostTeam:
           type: string
           description: hosting team
-          example: AGF
+          example: Randers
         guestTeam:
           type: string
           description: guest team
-          example: SønderjyskE
+          example: AGF
         stadium:
           type: string
           description: host staduim
-          example: Metropolitano
+          example: Camp Nou
         refereeId:
           type: integer
           description: referee id
-          example: 6
+          example: 8
         score:
           type: string
           description: the match result
-          example: 0-3
+          example: null
 
     EventGET:
       type: object
