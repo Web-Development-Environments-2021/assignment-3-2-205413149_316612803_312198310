@@ -1,6 +1,7 @@
 #Assignment-3-2-template
 
 env content:
+
     PORT=3000
     COOKIE_SECRET="abcdefg"
     api_token=EgqqwgXVZ9JUwjBWmUPaGRpQigoooQyM5fGGqJI78NsqLDsxuTOj0MCr0fz4
