@@ -54,43 +54,45 @@ router.get("/favoriteMatches", async (req, res, next) => {
   try {
     const userId = req.session.userId;
     const matchIds = await users_utils.getFavoriteMatches(userId);
-    if(matchIds.length == 0){throw{status: 404, message: "no matches to the specified user"}}
-    const matches_info = await matches_utils.getAllMatchesByIds(matchIds);   
-    res.status(200).send(matches_info);
+    if(matchIds.length == 0){
+      // throw{status: 404, message: "no matches to the specified user"}
+      res.status(200).send("NO")
+    }
+    else{
+      const matches_info = await matches_utils.getAllMatchesByIds(matchIds);   
+      res.status(200).send(matches_info);
+    }
+  } catch (error) {
+    next(error);
+  }
+});
+
+
+/**delete user's favorite match */
+router.delete("/favoriteMatches/:matchId", async (req, res, next) => {
+  try {
+    const userId = req.session.userId;
+    const matchIds = await users_utils.getFavoriteMatches(userId);
+    if(matchIds.length == 0){
+      throw{status: 404, message: "no matches to the specified user"}
+    }
+
+    let isValid = false;
+    matchIds.forEach(match => {
+      if (match.matchId.toString() == req.params.matchId){
+        isValid = true;
+      }
+    })
+
+    if(!isValid){
+      throw{status: 409, message: "match does not exist in user's favorites"}
+    }
+
+    await matches_utils.deleteFromFavoriteMatches(req.params.matchId);   
+    res.status(200).send("favorite match deleted successfuly");
   } catch (error) {
     next(error);
   }
 });
 
 module.exports = router;
-
-/**
- * This path gets body with playerId and save this player in the favorites list of the logged-in user
- */
-// router.post("/favoritePlayers", async (req, res, next) => {
-//   try {
-//     const userId = req.session.userId;
-//     const player_id = req.body.playerId;
-//     await users_utils.markPlayerAsFavorite(userId, player_id);
-//     res.status(201).send("The player successfully saved as favorite");
-//   } catch (error) {
-//     next(error);
-//   }
-// });
-// 
-// /**
-//  * This path returns the favorites players that were saved by the logged-in user
-//  */
-// router.get("/favoritePlayers", async (req, res, next) => {
-//   try {
-//     const userId = req.session.userId;
-//     let favorite_players = {};
-//     const player_ids = await users_utils.getFavoritePlayers(userId);
-//     let player_ids_array = [];
-//     player_ids.map((element) => player_ids_array.push(element.player_id)); //extracting the players ids into array
-//     const results = await players_utils.getPlayersInfo(player_ids_array);
-//     res.status(200).send(results);
-//   } catch (error) {
-//     next(error);
-//   }
-// });

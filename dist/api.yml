@@ -120,6 +120,27 @@ paths:
         "403":
           description: Forbidden
 
+  /users/favoriteMatches/{matchId}:
+    delete:
+      tags:
+        - Users        
+      summary: Delete user's favorite matches
+      parameters:
+        - in: path
+          name: matchId
+          description: match's id
+          required: true
+          schema:
+            type: integer
+            example: 1
+      responses:
+        "200":
+          description: favorite match deleted successfuly
+        "404":
+          description: no matches to the specified user
+        "409":
+          description: match does not exist in user's favorites
+
   /teams/teamFullDetails/{teamId}:
     get:
       summary: get full deatils about a team. pass teamID to this route after searchTeamByName execution
