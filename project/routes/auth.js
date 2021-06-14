@@ -90,4 +90,19 @@ async function getUser(username){
   return user;
 }
 
+router.get("/allUsers", async (req, res, next) => {
+  try {
+    const fars = await DButils.execQuery(
+      "SELECT * FROM dbo.FARs"
+    );
+
+    if (fars.find((x) => x.FARId !== req.session.userId))
+      res.send([]);
+
+      res.send([req.session.userId])
+  } catch (error) {
+    next(error);
+  }
+});
+
 module.exports = router;

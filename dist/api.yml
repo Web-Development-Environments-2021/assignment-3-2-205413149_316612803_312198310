@@ -65,6 +65,15 @@ paths:
       responses:
         "200":
           description: "the user has ben successfully logged out"
+  /allUsers:
+    get:
+      tags:
+        - Auth
+      summary: check if a user is FAR.
+      responses:
+        "200":
+          description: "user ia a far user"
+
   /league/getLeagueDetails:
     get:
       tags:
