@@ -69,6 +69,25 @@ router.post("/Logout", function (req, res) {
   res.send({ success: true, message: "logout succeeded" });
 });
 
+router.get("/profile/:userName", async function (req, res) {
+  try
+  {
+    let userName = req.params.userName;
+    userName = userName.replace(":","");
+    const userProfile = await getUser(userName); 
+    let data = []; 
+    data.push(userProfile);
+    res.status(200).send(data);
+  }
+  catch (error)
+  {
+    console.log(error);
+    res.status(500).send("problem with server");
+  }
+  
+});
+
+
 
 async function loginUser(username, password){
   //Sending request to the Data Layer

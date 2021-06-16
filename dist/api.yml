@@ -12,6 +12,22 @@ tags:
   - name: Matches
   - name: FAR
 paths:
+  /profile/:userName:
+      get:
+      tags:
+        - Users        
+      summary: Return the user profile
+      responses:
+        "200":
+          description: data about the user's profile
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/User"
+        "500":
+          description: problem with server
   /Register:
     post:
       tags:
