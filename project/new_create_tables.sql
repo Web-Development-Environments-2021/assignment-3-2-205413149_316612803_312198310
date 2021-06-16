@@ -109,3 +109,18 @@
 
  -- INSERT INTO dbo.FARs (FARId)
 -- VALUES (1)
+
+-- delete FROM matches where matchId=8
+-- delete FROM matches where matchId=9
+
+-- update matches set hostTeam = 'Silkeborg'
+-- where hostTeam = 'Esbjerg'
+
+-- update matches set guestTeam = 'Silkeborg'
+-- where guestTeam = 'Esbjerg'
+
+-- update matches set hostTeam = 'Midtjylland'
+-- where hostTeam = 'SønderjyskE'
+
+-- update matches set guestTeam = 'Midtjylland'
+-- where guestTeam = 'SønderjyskE'

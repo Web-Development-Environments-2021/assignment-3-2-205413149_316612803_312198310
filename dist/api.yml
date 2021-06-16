@@ -81,6 +81,15 @@ paths:
       responses:
         "200":
           description: "the user has ben successfully logged out"
+  /allUsers:
+    get:
+      tags:
+        - Auth
+      summary: check if a user is FAR.
+      responses:
+        "200":
+          description: "user ia a far user"
+
   /league/getLeagueDetails:
     get:
       tags:
@@ -135,6 +144,27 @@ paths:
           description: match already added to user's favorites
         "403":
           description: Forbidden
+
+  /users/favoriteMatches/{matchId}:
+    delete:
+      tags:
+        - Users        
+      summary: Delete user's favorite matches
+      parameters:
+        - in: path
+          name: matchId
+          description: match's id
+          required: true
+          schema:
+            type: integer
+            example: 1
+      responses:
+        "200":
+          description: favorite match deleted successfuly
+        "404":
+          description: no matches to the specified user
+        "409":
+          description: match does not exist in user's favorites
 
   /teams/teamFullDetails/{teamId}:
     get:

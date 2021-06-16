@@ -46,10 +46,17 @@ async function getMatchByIdFullDetails(matchId) {
   return matches;
 }
 
+async function deleteFromFavoriteMatches(matchId){
+  await DButils.execQuery(
+    `delete from favoriteMatches where favoriteMatches.matchId=${matchId}`
+  );
+}
+
 
   exports.getMatchesByStage = getMatchesByStage;
   exports.getMatchById = getMatchById;
   exports.getMatchEventByMatch = getMatchEventByMatch;
   exports.getAllMatchesByIds = getAllMatchesByIds;
+  exports.deleteFromFavoriteMatches = deleteFromFavoriteMatches;
 
   // `select matches.matchId ,matches.matchDate ,matches.matchHour ,matches.hostTeam , matches.guestTeam, matches.staduim ,matches.coachID ,matches.score ,eventLog.eventHour as Time,eventLog.eventDescription as Description from matches left join eventLog on matches.matchId = eventLog.matchId`

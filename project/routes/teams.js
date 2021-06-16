@@ -5,11 +5,18 @@ const teams_utils = require("./utils/teams_utils");
 const LEAGUE_ID = 271;
 //route after user selects a specific team. show full details by teamId.
 router.get("/teamFullDetails/:teamId", async (req, res, next) => {
-   let players_details = [];
+   let players_details = [{
+    player_id: 14685598,
+    name: "Daniel Andersen",
+    image: "https://cdn.sportmonks.com/images/soccer/players/4/191012.png",
+    position: 1,
+    team_name: "AGF"
+  }];
+  
   try {
-    const players_details = await players_utils.getPlayersByTeam(
-      req.params.teamId
-    );
+    // const players_details = await players_utils.getPlayersByTeam(
+    //   req.params.teamId
+    // );
 
     const teamName = await teams_utils.getTeamNameById(
       req.params.teamId
@@ -38,13 +45,20 @@ router.get("/teamFullDetails/:teamId", async (req, res, next) => {
 router.get("/searchTeamByName/:teamName", async (req, res, next) => {
   try{     
 
-      const team = await teams_utils.getTeamByName(req.params.teamName);
-      if(team === undefined || team.length == 0){
-        throw {status: 404, message: "Bad Request. no such team."}
+      const teams = await teams_utils.getTeamByName(req.params.teamName);
+      if(teams === undefined || teams.length == 0){
+        res.status(404).send("Bad Request. no such team.") 
+        // throw{status: 404, message: "Bad Request. no such team."}
       }
       
       //await teams_utils.getAllTeamsByCountryId(320);
-      res.send(team);
+      if(teams.length > 20){
+        res.send(teams.slice(0, 20));
+      }
+      else{
+        res.send(teams);
+      }
+      
 
   } catch(error){
       next(error);
