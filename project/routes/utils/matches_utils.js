@@ -6,6 +6,7 @@ async function getMatchesByStage() {
     const matches = await DButils.execQuery(
       `select * from matches where matches.stage=10`
     );
+    console.log("gal")
     return matches;
   }
 

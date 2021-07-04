@@ -7,8 +7,7 @@ const matches_utils = require("./utils/matches_utils");
 /**
  * Authenticate all incoming requests by middleware
  */
-router.use(async function (req, res, next) {
-  
+ router.use(async function (req, res, next) {
   if (req.session && req.session.userId) {
     DButils.execQuery("SELECT userId FROM users")
       .then((users) => {
@@ -62,11 +61,11 @@ router.get("/favoriteMatches", async (req, res, next) => {
       const matches_info = await matches_utils.getAllMatchesByIds(matchIds);   
       res.status(200).send(matches_info);
     }
+    next()
   } catch (error) {
     next(error);
   }
 });
-
 
 /**delete user's favorite match */
 router.delete("/favoriteMatches/:matchId", async (req, res, next) => {
