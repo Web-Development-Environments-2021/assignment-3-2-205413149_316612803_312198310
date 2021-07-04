@@ -32,7 +32,7 @@ router.post("/favoriteMatches", async (req, res, next) => {
       throw{status: 404, message: "matchId does not exist"}
     }    
 
-    numOfTeams = await users_utils.getFavoriteMatchByMatchId(matchId);
+    numOfTeams = await users_utils.getFavoriteMatchByMatchId(matchId, userId);
     if(numOfTeams > 0){
         throw{status: 401, message: "match already added to user's favorites."}
       }

@@ -5,18 +5,18 @@ const teams_utils = require("./utils/teams_utils");
 const LEAGUE_ID = 271;
 //route after user selects a specific team. show full details by teamId.
 router.get("/teamFullDetails/:teamId", async (req, res, next) => {
-   let players_details = [{
-    player_id: 14685598,
-    name: "Daniel Andersen",
-    image: "https://cdn.sportmonks.com/images/soccer/players/4/191012.png",
-    position: 1,
-    team_name: "AGF"
-  }];
+  //  let players_details = [{
+  //   player_id: 14685598,
+  //   name: "Daniel Andersen",
+  //   image: "https://cdn.sportmonks.com/images/soccer/players/4/191012.png",
+  //   position: 1,
+  //   team_name: "AGF"
+  // }];
   
   try {
-    // const players_details = await players_utils.getPlayersByTeam(
-    //   req.params.teamId
-    // );
+    const players_details = await players_utils.getPlayersByTeam(
+      req.params.teamId
+    );
 
     const teamName = await teams_utils.getTeamNameById(
       req.params.teamId

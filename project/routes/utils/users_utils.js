@@ -27,9 +27,9 @@ async function getFavoriteMatches(userId) {
   return playerIds;
 }
 
-async function getFavoriteMatchByMatchId(matchId){
+async function getFavoriteMatchByMatchId(matchId, userId){
   const matches = await DButils.execQuery(
-    `select * from FavoriteMatches where FavoriteMatches.matchId=${matchId}`
+    `select * from FavoriteMatches where FavoriteMatches.matchId=${matchId} AND FavoriteMatches.userId=${userId}`
     
   );
   return matches.length;
