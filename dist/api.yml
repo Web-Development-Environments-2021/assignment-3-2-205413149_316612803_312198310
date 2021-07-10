@@ -12,22 +12,6 @@ tags:
   - name: Matches
   - name: FAR
 paths:
-  /profile/:userName:
-      get:
-      tags:
-        - Users        
-      summary: Return the user profile
-      responses:
-        "200":
-          description: data about the user's profile
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/User"
-        "500":
-          description: problem with server
   /Register:
     post:
       tags:
@@ -104,7 +88,30 @@ paths:
                 $ref: "#/components/schemas/League"
         "400":
           description: wrong input parameters
-
+  /profile/{userName}:
+      get:
+        tags:
+          - Users       
+        summary: Return the user profile
+        parameters:
+        - in: path
+          name: userName
+          description: user's Name
+          required: true
+          schema:
+            type: string
+            example: "chandler"
+        responses:
+          "200":
+            description: data about the user's profile
+            content:
+              application/json:
+                schema:
+                  type: array
+                  items:
+                    $ref: "#/components/schemas/User"
+          "500":
+            description: problem with server
   /users/favoriteMatches:
     get:
       tags:
